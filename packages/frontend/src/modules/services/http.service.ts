@@ -1,6 +1,4 @@
 import axios from 'axios';
-import { ITodo } from '../common/types/todo.types';
-import { QUERY_KEYS } from '../common/consts/app-keys.const';
 
 interface IHttp {
   baseUrl: string;
@@ -8,7 +6,7 @@ interface IHttp {
   apiVersion: string;
 }
 
-class TodoHttpSerivce implements IHttp {
+class HttpService<T> implements IHttp {
   constructor(url: string, baseUrl = 'http://localhost:4200', apiVersion = 'api') {
     this.baseUrl = baseUrl;
     this.apiVersion = apiVersion;
@@ -25,40 +23,33 @@ class TodoHttpSerivce implements IHttp {
     return `${this.baseUrl}/${this.apiVersion}/${this.url}`;
   }
 
-  getUrlId(id: string) {
+  getUrlId(id: string): string {
     return `${this.getUrl()}/${id}`;
   }
 
-  async getAll(): Promise<ITodo[]> {
+  public async getAll(): Promise<T[]> {
     const { data } = await axios.get(this.getUrl());
     return data;
   }
 
-  async getOne(id: string): Promise<ITodo> {
+  public async getOne(id: string): Promise<T> {
     const { data } = await axios.get(this.getUrlId(id));
     return data;
   }
 
-  async create(todo: ITodo): Promise<ITodo> {
-    const { data } = await axios.post(this.getUrl(), todo);
+  public async create(body: T): Promise<T> {
+    const { data } = await axios.post(this.getUrl(), body);
     return data;
   }
 
-  async update({ id, todo }: UpdateArgs): Promise<ITodo> {
-    const { data } = await axios.put(this.getUrlId(id), todo);
+  public async update(id: string, body: T): Promise<T> {
+    const { data } = await axios.put(this.getUrlId(id), body);
     return data;
   }
 
-  async delete(id: string): Promise<void> {
+  public async delete(id: string): Promise<void> {
     await axios.delete(this.getUrlId(id));
   }
 }
-
-interface UpdateArgs {
-  id: string;
-  todo: ITodo;
-}
-
-const HttpService = new TodoHttpSerivce(QUERY_KEYS.TODOS);
 
 export default HttpService;

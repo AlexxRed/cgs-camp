@@ -5,7 +5,8 @@ import { CreateButton } from '../common/components/create-button/create-button.c
 import { TodoList } from '../common/components/todo-list/todo-list.component';
 import { Container } from '../common/components/main-conteiner/main-conteiner.component';
 import { QUERY_KEYS } from '../common/consts/app-keys.const';
-import HttpService from '../services/http.service';
+// import HttpService from '../services/http.service';
+import todoService from '../services/todo.service';
 import { Loader } from '../common/components/loader/loader';
 
 // const td = [
@@ -24,7 +25,7 @@ import { Loader } from '../common/components/loader/loader';
 const HomePageContainer = () => {
   const history = useHistory();
   const queryClient = useQueryClient();
-  const { data, isError, isLoading } = useQuery(QUERY_KEYS.TODOS, () => HttpService.getAll());
+  const { data, isError, isLoading } = useQuery(QUERY_KEYS.TODOS, () => todoService.getAllTodos());
 
   useEffect(() => {
     queryClient.invalidateQueries(QUERY_KEYS.TODOS);
@@ -33,7 +34,7 @@ const HomePageContainer = () => {
   return (
     <Container>
       <CreateButton />
-      {isLoading ? <Loader /> : isError ? <h3>Error loading</h3> : <TodoList data={data} />}
+      {isLoading ? <Loader /> : isError ? <h3>Error loading</h3> : <TodoList data={data!} />}
     </Container>
   );
 };

@@ -6,12 +6,12 @@ import { ItemContainer, ItemHeader, ItemInfo, ButtonBox } from './todo-item.styl
 import DeleteButton from '../delete-button/delete-button.component';
 import EditButton from '../edit-button/edit-button.component';
 import { QUERY_KEYS } from '../../consts/app-keys.const';
-import HttpService from '../../../services/http.service';
+import todoService from '../../../services/todo.service';
 
-export const TodoItem = ({ todo }: { todo: ITodo | any }) => {
+export const TodoItem = ({ todo }: { todo: ITodo }) => {
   const queryClient = useQueryClient();
 
-  const deleteTodoMutation = useMutation(HttpService.delete.bind(HttpService), {
+  const deleteTodoMutation = useMutation(todoService.deleteTodo.bind(todoService), {
     onSuccess: () => {
       queryClient.invalidateQueries(QUERY_KEYS.TODOS);
     }
@@ -25,7 +25,7 @@ export const TodoItem = ({ todo }: { todo: ITodo | any }) => {
           <Link to={`/${todo._id}`}>
             <EditButton todo={todo} />
           </Link>
-          <DeleteButton onClick={() => deleteTodoMutation.mutate(todo._id)} />
+          <DeleteButton onClick={() => deleteTodoMutation.mutate(todo._id!)} />
         </ButtonBox>
       </ItemHeader>
       <ItemInfo>{todo.description}</ItemInfo>

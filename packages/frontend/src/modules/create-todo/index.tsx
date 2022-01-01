@@ -2,14 +2,14 @@ import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import CreateTodoFormComponent from '../common/components/create-todo-form/create-todo-form.component';
 import { Container } from '../common/components/main-conteiner/main-conteiner.component';
-import HttpService from '../services/http.service';
+import todoService from '../services/todo.service';
 import { ITodo } from '../common/types/todo.types';
 import { QUERY_KEYS } from '../common/consts/app-keys.const';
 
 const TodoCreateContainer = () => {
   const queryClient = useQueryClient();
 
-  const createTodoMutation = useMutation(HttpService.create.bind(HttpService), {
+  const createTodoMutation = useMutation(todoService.createTodo.bind(todoService), {
     onSuccess: () => {
       queryClient.invalidateQueries(QUERY_KEYS.TODOS);
     }

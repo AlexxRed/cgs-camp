@@ -6,7 +6,7 @@ import { Loader } from '../common/components/loader/loader';
 import { Container } from '../common/components/main-conteiner/main-conteiner.component';
 import { QUERY_KEYS } from '../common/consts/app-keys.const';
 import { ITodo } from '../common/types/todo.types';
-import HttpService from '../services/http.service';
+import todoService from '../services/todo.service';
 
 const TodoUpdateleContainer = () => {
   const queryClient = useQueryClient();
@@ -14,24 +14,27 @@ const TodoUpdateleContainer = () => {
   const { id }: { id: string } = useParams();
 
   const { data, isError, isLoading } = useQuery([QUERY_KEYS.TODOS, id], () =>
-    HttpService.getOne(id)
+    todoService.getOneTodo(id)
   );
-  const createTodoMutation = useMutation(HttpService.update.bind(HttpService), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(QUERY_KEYS.TODOS);
+
+  const createTodoMutation = useMutation(
+    (body: ITodo) => todoService.updateTodo(body._id as string, body),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(QUERY_KEYS.TODOS);
+        queryClient.invalidateQueries([QUERY_KEYS.TODOS, id]);
+      }
     }
-  });
+  );
 
   const onSave = (values: ITodo): void => {
     createTodoMutation.mutate({
-      id,
-      todo: {
-        title: values.title,
-        description: values.description,
-        year: values.year,
-        completed: values.completed,
-        public: values.public
-      }
+      _id: id,
+      title: values.title,
+      description: values.description,
+      year: values.year,
+      completed: values.completed,
+      public: values.public
     });
   };
 
@@ -42,7 +45,7 @@ const TodoUpdateleContainer = () => {
       ) : isError ? (
         <h3>Error loading</h3>
       ) : (
-        data && <CreateTodoFormComponent data={data} onSave={onSave} title="Edit Todo" />
+        data && <CreateTodoFormComponent data={data!} onSave={onSave} title="Edit Todo" />
       )}
     </Container>
   );

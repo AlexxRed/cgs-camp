@@ -1,16 +1,10 @@
 import React, { FC } from 'react';
-import { Formik, ErrorMessage, FormikHelpers } from 'formik';
+import { Formik, FormikHelpers } from 'formik';
 import { useHistory } from 'react-router-dom';
 // import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
-import {
-  LableForm,
-  Box,
-  CreateTodo,
-  FormTitle,
-  InputForm,
-  FormButton
-} from './create-todo-form.styled';
+import { Box, CreateTodo, FormTitle, FormButton } from './create-todo-form.styled';
+import InputField from '../input-field-component/input-field.component';
 import createdTodoValidation from '../../consts/validation/created-todo-validation';
 import { ITodo } from '../../types/todo.types';
 import { ROUTER_KEYS } from '../../consts/app-keys.const';
@@ -20,13 +14,6 @@ interface IProps {
   onSave: (item: ITodo) => void;
   title: string;
 }
-// const initialValues = {
-//     title: '',
-//     description: '',
-//     year: 2022,
-//     public: false,
-//     completed: false
-//   };
 
 const CreateTodoFormComponent: FC<IProps> = ({ data, onSave, title }) => {
   const history = useHistory();
@@ -37,46 +24,17 @@ const CreateTodoFormComponent: FC<IProps> = ({ data, onSave, title }) => {
     history.push(`${ROUTER_KEYS.ROOT}`);
   };
 
-  const renderError = (message: string) => <div style={{ color: 'red' }}>{message}</div>;
-
   return (
     <Box>
       <FormTitle>{title}</FormTitle>
 
       <Formik initialValues={data} onSubmit={handleSubmit} validationSchema={createdTodoValidation}>
         <CreateTodo autoComplete="off">
-          <LableForm htmlFor="title">
-            Title
-            <InputForm type="text" name="title" placeholder="Example title" />
-          </LableForm>
-          <ErrorMessage name="title" render={renderError} />
-
-          <LableForm htmlFor="description">
-            Description
-            <InputForm
-              component="textarea"
-              rows="5"
-              name="description"
-              placeholder="Your Todo here"
-            />
-          </LableForm>
-          <ErrorMessage name="description" render={renderError} />
-
-          <LableForm htmlFor="year">
-            Year
-            <InputForm type="text" name="year" placeholder="2022" />
-          </LableForm>
-          <ErrorMessage name="year" render={renderError} />
-
-          <LableForm htmlFor="public" style={{ display: 'flex' }}>
-            Public
-            <InputForm style={{ height: 20 }} type="checkbox" name="public" />
-          </LableForm>
-
-          <LableForm htmlFor="completed">
-            Completed
-            <InputForm style={{ height: 20 }} type="checkbox" name="completed" />
-          </LableForm>
+          <InputField name="title" title="Title" type="text" />
+          <InputField name="description" title="Description" type="textarea" />
+          <InputField name="year" title="Year" type="text" />
+          <InputField name="public" title="Public" type="checkbox" />
+          <InputField name="completed" title="Completed" type="checkbox" />
           {title === 'Create new Todo' ? (
             <FormButton type="submit">Create</FormButton>
           ) : (
