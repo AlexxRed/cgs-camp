@@ -11,47 +11,26 @@ interface ITodo {
 
 export default class TodoService {
   async findAll() {
-    try {
-      const todos = await Todo.find();
-      return todos;
-    } catch {
-      return null;
-    }
+    const todos = await Todo.find();
+    return todos;
   }
 
   async findOne(id: string) {
-    try {
-      const todo = await Todo.findById(id);
-      return todo;
-    } catch {
-      return null;
-    }
+    const todo = await Todo.findById(id);
+    return todo;
   }
 
   async create(data: ITodo) {
-    try {
-      const todo = await Todo.create(data);
-      return todo;
-    } catch {
-      return null;
-    }
+    const todo = await Todo.create(data);
+    return todo;
   }
 
   async update(id: string, data: ITodo) {
-    try {
-      const todo = await Todo.findByIdAndUpdate(id, data);
-      return todo;
-    } catch {
-      return null;
-    }
+    const todo = await Todo.findByIdAndUpdate(id, data);
+    return todo;
   }
 
   async delete(id: string) {
-    try {
-      await Todo.findByIdAndDelete(id);
-      return 'Success';
-    } catch {
-      return 'Not Found';
-    }
+    await Todo.findByIdAndDelete(id);
   }
 }
