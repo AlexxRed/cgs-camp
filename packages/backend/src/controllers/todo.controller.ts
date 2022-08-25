@@ -1,13 +1,36 @@
-import { Response, Request } from 'express';
+import { Request } from 'express';
 import TodoService from '../services/todo.service';
+import { ITodo } from '../types/todos.type';
 
 export class TodoController {
   constructor(private todoService: TodoService) {}
 
-  async getAllTodo(_: Request, res: Response) {
-    // TODO: Write your implementation here
+  public async getAllTodo() {
     const todos = await this.todoService.findAll();
-    res.send(todos);
+    return todos;
+  }
+
+  public async createTodo(req: Request<{}, ITodo>) {
+    const todo = req.body;
+    const createdTodo = await this.todoService.create(todo);
+    return createdTodo;
+  }
+
+  public async findOne(req: Request<{ id: string }>) {
+    const { id } = req.params;
+    const todos = await this.todoService.findOne(id);
+    return todos;
+  }
+
+  public async updateOneTodo(req: Request<{ id: string }>) {
+    const { id } = req.params;
+    const todo = req.body;
+    await this.todoService.update(id, todo);
+  }
+
+  public async deleteTodo(req: Request<{ id: string }>) {
+    const { id } = req.params;
+    await this.todoService.delete(id);
   }
 }
 
