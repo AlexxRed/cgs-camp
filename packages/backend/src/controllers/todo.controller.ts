@@ -1,38 +1,36 @@
-import { Response, Request } from 'express';
+import { Request } from 'express';
 import TodoService from '../services/todo.service';
 import { ITodo } from '../types/todos.type';
 
 export class TodoController {
   constructor(private todoService: TodoService) {}
 
-  public async getAllTodo(_req: Request, res: Response) {
+  public async getAllTodo() {
     const todos = await this.todoService.findAll();
-    res.json(todos);
+    return todos;
   }
 
-  public async createTodo(req: Request<{}, ITodo>, res: Response) {
+  public async createTodo(req: Request<{}, ITodo>) {
     const todo = req.body;
     const createdTodo = await this.todoService.create(todo);
-    res.json(createdTodo);
+    return createdTodo;
   }
 
-  public async findOne(req: Request<{ id: string }>, res: Response) {
+  public async findOne(req: Request<{ id: string }>) {
     const { id } = req.params;
     const todos = await this.todoService.findOne(id);
-    res.json(todos);
+    return todos;
   }
 
-  public async updateOneTodo(req: Request<{ id: string }>, res: Response) {
+  public async updateOneTodo(req: Request<{ id: string }>) {
     const { id } = req.params;
     const todo = req.body;
     await this.todoService.update(id, todo);
-    res.json();
   }
 
-  public async deleteTodo(req: Request<{ id: string }>, res: Response) {
+  public async deleteTodo(req: Request<{ id: string }>) {
     const { id } = req.params;
     await this.todoService.delete(id);
-    res.json();
   }
 }
 
