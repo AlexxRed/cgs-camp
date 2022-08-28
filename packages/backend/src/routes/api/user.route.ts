@@ -1,12 +1,22 @@
-import { Router, Request, Response } from 'express';
+import { Router } from 'express';
 
-const router: Router = Router();
+import { joiUserLoginSchema } from '../../helpers/joiValidation/JoiUserLoginSchema';
+import { joiUserRegisterSchema } from '../../helpers/joiValidation/JoiUserRegisterSchema';
+import userContoller from '../../controllers/auth.controller';
+import validation from '../../middlewares/validation';
+import ctrlWrapper from '../../middlewares/ctrlWrapper';
 
-// @route   POST api/user
-// @desc    Register user given their email and password, returns the token upon successful registration
-// @access  Public
-router.post('/register', async (_: Request, res: Response) => {
-  res.send('Add registration logic there');
-});
+const userRouter: Router = Router();
 
-export default router;
+userRouter.post(
+  '/login',
+  validation(joiUserLoginSchema),
+  ctrlWrapper(userContoller.login.bind(userContoller))
+);
+
+userRouter.post(
+  '/register',
+  validation(joiUserRegisterSchema),
+  ctrlWrapper(userContoller.register.bind(userContoller))
+);
+export default userRouter;
