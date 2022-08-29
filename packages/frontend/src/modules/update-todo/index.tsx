@@ -22,7 +22,6 @@ const TodoUpdateleContainer = () => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries(QUERY_KEYS.TODOS);
-        queryClient.invalidateQueries([QUERY_KEYS.TODOS, id]);
       }
     }
   );
@@ -36,6 +35,7 @@ const TodoUpdateleContainer = () => {
       completed: values.completed,
       public: values.public
     });
+    queryClient.clear();
   };
 
   return (
