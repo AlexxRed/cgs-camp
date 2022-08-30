@@ -6,5 +6,5 @@ export interface ITodo {
   description?: string;
   public?: boolean;
   complited?: boolean;
-  date?: Date | string;
+  owner?: string | number;
 }

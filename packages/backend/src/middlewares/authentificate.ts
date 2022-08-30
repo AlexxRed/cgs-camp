@@ -1,14 +1,15 @@
-import { Response, Request, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
 import User from '../models/User';
 
 import createError from '../helpers/createError';
+import { IAppRequest } from '../types/common.type';
 
 const { JWT_SECRET } = process.env;
 
-const authenticate = async (req: Request | any, res: Response, next: NextFunction) => {
+const authenticate = async (req: IAppRequest, res: Response, next: NextFunction) => {
   const { authorization = '' } = req.headers;
   const [bearer, token] = authorization.split(' ');
 
@@ -17,7 +18,11 @@ const authenticate = async (req: Request | any, res: Response, next: NextFunctio
       throw createError(401);
     }
     try {
-      const { id }: JwtPayload | any = jwt.verify(token, JWT_SECRET);
+      const verifyResult: JwtPayload | string = jwt.verify(token, JWT_SECRET);
+      if (typeof verifyResult !== 'object') {
+        throw createError(401);
+      }
+      const { id } = verifyResult;
       const user = await User.findById(id);
       if (!user) {
         throw createError(401);
