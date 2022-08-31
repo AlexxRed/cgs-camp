@@ -1,17 +1,23 @@
 import Todo from '../models/Todo';
+import { ITodo } from '../types/todos.type';
 
-interface ITodo {
-  data: string;
-  title: string;
-  description?: string;
-  public: boolean;
-  complited: boolean;
-  date: Date;
-}
+// interface ITodo {
+//   data: string;
+//   title: string;
+//   description?: string;
+//   public: boolean;
+//   complited: boolean;
+//   date: Date;
+// }
 
 export default class TodoService {
   async findAll() {
     const todos = await Todo.find();
+    return todos;
+  }
+
+  async findOwnerTodo<T>(owner: T) {
+    const todos = await Todo.find(owner);
     return todos;
   }
 

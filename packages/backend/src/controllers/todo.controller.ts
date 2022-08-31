@@ -1,6 +1,6 @@
-import { Request } from 'express';
+import { IAppRequest } from '../types/common.type';
 import TodoService from '../services/todo.service';
-import { ITodo } from '../types/todos.type';
+import { IUser } from '../types/user.type';
 
 export class TodoController {
   constructor(private todoService: TodoService) {}
@@ -10,25 +10,32 @@ export class TodoController {
     return todos;
   }
 
-  public async createTodo(req: Request<{}, ITodo>) {
+  public async getByOwnerTodo(req: IAppRequest) {
+    const { _id: owner } = req.user as IUser;
+    const todos = await this.todoService.findOwnerTodo({ owner });
+    return todos;
+  }
+
+  public async createTodo(req: IAppRequest) {
+    const { _id: owner } = req.user as IUser;
     const todo = req.body;
-    const createdTodo = await this.todoService.create(todo);
+    const createdTodo = await this.todoService.create({ ...todo, owner });
     return createdTodo;
   }
 
-  public async findOne(req: Request<{ id: string }>) {
+  public async findOne(req: IAppRequest) {
     const { id } = req.params;
     const todos = await this.todoService.findOne(id);
     return todos;
   }
 
-  public async updateOneTodo(req: Request<{ id: string }>) {
+  public async updateOneTodo(req: IAppRequest) {
     const { id } = req.params;
     const todo = req.body;
     await this.todoService.update(id, todo);
   }
 
-  public async deleteTodo(req: Request<{ id: string }>) {
+  public async deleteTodo(req: IAppRequest) {
     const { id } = req.params;
     await this.todoService.delete(id);
   }
