@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { Button } from '@mui/material';
 import LoginFormComponent from '../common/components/login-form/login-form-component';
 import { Container } from '../common/components/main-conteiner/main-conteiner.component';
-import { ROUTER_KEYS } from '../common/consts/app-keys.const';
+import { ROUTER_KEYS, QUERY_KEYS } from '../common/consts/app-keys.const';
 import { IUser } from '../common/types/user.types';
 import userService from '../services/auth.service';
 
@@ -18,8 +18,8 @@ const LoginContainer = () => {
 
   const loginMutation = useMutation((body: IUser) => userService.loginUser(body), {
     onSuccess: (data) => {
-      queryClient.invalidateQueries('user');
-      localStorage.setItem('user', JSON.stringify(data.token));
+      queryClient.invalidateQueries(QUERY_KEYS.AUTH);
+      localStorage.setItem(QUERY_KEYS.AUTH, JSON.stringify(data.token));
       history.push(ROUTER_KEYS.ROOT);
     }
   });
