@@ -6,6 +6,7 @@ import TodoCreateContainer from '../create-todo';
 import TodoUpdateContainer from '../update-todo';
 import RegisterContainer from '../register';
 import LoginContainer from '../login';
+import MyTodosContainer from '../mytodos';
 
 export const MainRouter = () => {
   const isLoggedIn = JSON.parse(localStorage.getItem('user')!);
@@ -20,6 +21,13 @@ export const MainRouter = () => {
             <Route path={APP_KEYS.ROUTER_KEYS.ROOT} component={LoginContainer} />
           )}
         </Route>
+        <Route exact path={APP_KEYS.ROUTER_KEYS.OWN}>
+          {isLoggedIn ? (
+            <Route exact path={APP_KEYS.ROUTER_KEYS.OWN} component={MyTodosContainer} />
+          ) : (
+            <Route path={APP_KEYS.ROUTER_KEYS.ROOT} component={LoginContainer} />
+          )}
+        </Route>
         <Route exact path={APP_KEYS.ROUTER_KEYS.CREATE_TODO}>
           {isLoggedIn ? (
             <Route path={APP_KEYS.ROUTER_KEYS.CREATE_TODO} component={TodoCreateContainer} />
@@ -29,7 +37,7 @@ export const MainRouter = () => {
         </Route>
         <Route exact path={APP_KEYS.ROUTER_KEYS.UPDATE_TODO}>
           {isLoggedIn ? (
-            <Route exact path={APP_KEYS.ROUTER_KEYS.UPDATE_TODO} component={TodoUpdateContainer} />
+            <Route path={APP_KEYS.ROUTER_KEYS.UPDATE_TODO} component={TodoUpdateContainer} />
           ) : (
             <Route path={APP_KEYS.ROUTER_KEYS.ROOT} component={LoginContainer} />
           )}
@@ -48,7 +56,8 @@ export const MainRouter = () => {
             <Route path={APP_KEYS.ROUTER_KEYS.LOGIN} component={LoginContainer} />
           )}
         </Route>
-        <Route path={APP_KEYS.ROUTER_KEYS.REGISTER} component={RegisterContainer} />
+        {/* <Route path={APP_KEYS.ROUTER_KEYS.REGISTER} component={RegisterContainer} /> */}
+        {/* <Route path={APP_KEYS.ROUTER_KEYS.OWN} component={MyTodosContainer} /> */}
         {/* <Route exact path={APP_KEYS.ROUTER_KEYS.ROOT} component={HomePageContainer} />
         <Route path={APP_KEYS.ROUTER_KEYS.CREATE_TODO} component={TodoCreateContainer} />
         <Route exact path={APP_KEYS.ROUTER_KEYS.UPDATE_TODO} component={TodoUpdateContainer} /> */}

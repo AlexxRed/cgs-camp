@@ -11,6 +11,8 @@ class TodoService {
 
   getAllTodos = async () => this.httpService.getAll();
 
+  getOwnTodos = async () => this.httpService.getOwn();
+
   getOneTodo = async (id: string) => this.httpService.getOne(id);
 
   createTodo = async (body: ITodo) => this.httpService.create(body);

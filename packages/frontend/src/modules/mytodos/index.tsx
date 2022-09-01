@@ -5,31 +5,43 @@ import { Button } from '@mui/material';
 import { CreateButton } from '../common/components/create-button/create-button.component';
 import { TodoList } from '../common/components/todo-list/todo-list.component';
 import { Container } from '../common/components/main-conteiner/main-conteiner.component';
-import { QUERY_KEYS, ROUTER_KEYS } from '../common/consts/app-keys.const';
-// import HttpService from '../services/http.service';
+import { QUERY_KEYS } from '../common/consts/app-keys.const';
 import todoService from '../services/todo.service';
 import { Loader } from '../common/components/loader/loader';
 
-const HomePageContainer = () => {
+const MyTodosContainer = () => {
   const history = useHistory();
   const queryClient = useQueryClient();
-  const { data, isError, isLoading } = useQuery(QUERY_KEYS.TODOS, () => todoService.getAllTodos());
+  const { data, isError, isLoading } = useQuery('/own', () => todoService.getOwnTodos());
 
   useEffect(() => {
-    queryClient.invalidateQueries(QUERY_KEYS.TODOS);
+    queryClient.invalidateQueries(QUERY_KEYS.OWNTODOS);
   }, [history]);
 
-  const handleClick = () => {
-    history.push(ROUTER_KEYS.OWN);
+  const handleComleted = () => {
+    const queryString = 'filter?public=false&completed=true';
+    history.push(queryString);
+  };
+
+  const handleNotComleted = () => {
+    const queryString = 'filter?public=false&completed=false';
+    history.push(queryString);
   };
 
   return (
     <Container>
       <CreateButton />
-      <Button onClick={handleClick}>My Todos</Button>
+      <div>
+        <Button type="button" onClick={handleComleted}>
+          Completed Todos
+        </Button>
+        <Button type="button" onClick={handleNotComleted}>
+          Not Coomleted
+        </Button>
+      </div>
       {isLoading ? <Loader /> : isError ? <h3>Error loading</h3> : <TodoList data={data!} />}
     </Container>
   );
 };
 
-export default HomePageContainer;
+export default MyTodosContainer;
