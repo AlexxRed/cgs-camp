@@ -4,14 +4,14 @@ import CreateTodoFormComponent from '../common/components/create-todo-form/creat
 import { Container } from '../common/components/main-conteiner/main-conteiner.component';
 import todoService from '../services/todo.service';
 import { ITodo } from '../common/types/todo.types';
-import { QUERY_KEYS } from '../common/consts/app-keys.const';
+// import { QUERY_KEYS } from '../common/consts/app-keys.const';
 
 const TodoCreateContainer = () => {
   const queryClient = useQueryClient();
 
   const createTodoMutation = useMutation(todoService.createTodo.bind(todoService), {
     onSuccess: () => {
-      queryClient.invalidateQueries(QUERY_KEYS.TODOS);
+      queryClient.invalidateQueries();
     }
   });
 

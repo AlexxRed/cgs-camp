@@ -1,3 +1,4 @@
+import { QueryOptions } from 'mongoose';
 import Todo from '../models/Todo';
 import { ITodo } from '../types/todos.type';
 import { ITodoFilter } from '../types/search.type';
@@ -21,8 +22,16 @@ export default class TodoService {
     return todos;
   }
 
-  async findTodos(options: ITodoFilter<boolean>) {
-    const todos = await Todo.find(options);
+  async findTodos(
+    filter: ITodoFilter<boolean, number>,
+    paging?: { page: number; pageSize: number }
+  ) {
+    const options: QueryOptions = {};
+    if (paging) {
+      options.skip = paging.page * paging.pageSize;
+      options.limit = paging.pageSize;
+    }
+    const todos = await Todo.find(filter, null, options);
     return todos;
   }
 

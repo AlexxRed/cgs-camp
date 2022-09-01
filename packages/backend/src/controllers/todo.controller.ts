@@ -7,8 +7,9 @@ import { ITodo } from '../types/todos.type';
 export class TodoController {
   constructor(private todoService: TodoService) {}
 
-  public async getAllTodo() {
-    const todos = await this.todoService.findAll();
+  public async getAllTodo(req: IAppRequest) {
+    const params = req.query as ITodoFilter<string>;
+    const todos = await this.getFilteredTodos(params);
     return todos;
   }
 
@@ -44,7 +45,7 @@ export class TodoController {
   }
 
   private async getFilteredTodos(params: ITodoFilter<string>): Promise<ITodo[]> {
-    const filter: ITodoFilter<boolean> = {};
+    const filter: ITodoFilter<boolean, number> = {};
     if (typeof params.completed !== 'undefined') {
       filter.completed = params.completed === 'true';
     }
@@ -54,7 +55,15 @@ export class TodoController {
     if (typeof params.owner !== 'undefined') {
       filter.owner = params.owner;
     }
-    const todos = await this.todoService.findTodos(filter);
+
+    let paging: { page: number; pageSize: number } | undefined;
+    if (typeof params.page !== 'undefined' && typeof params.pageSize !== 'undefined') {
+      paging = {
+        page: parseInt(params.page, 10),
+        pageSize: parseInt(params.pageSize, 10)
+      };
+    }
+    const todos = await this.todoService.findTodos(filter, paging);
     return todos;
   }
 }

@@ -21,7 +21,7 @@ const TodoUpdateleContainer = () => {
     (body: ITodo) => todoService.updateTodo(body._id as string, body),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(QUERY_KEYS.TODOS);
+        queryClient.invalidateQueries();
       }
     }
   );

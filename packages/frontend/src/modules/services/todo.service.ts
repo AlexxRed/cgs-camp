@@ -9,7 +9,8 @@ class TodoService {
     this.httpService = httpService;
   }
 
-  getAllTodos = async () => this.httpService.getAll();
+  getAllTodos = async (filter?: { page: number; pageSize: number }) =>
+    this.httpService.getAll(filter);
 
   getOwnTodos = async (filter?: { completed: boolean }) => this.httpService.getOwn(filter);
 
