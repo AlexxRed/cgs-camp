@@ -1,14 +1,6 @@
 import Todo from '../models/Todo';
 import { ITodo } from '../types/todos.type';
 import { ITodoFilter } from '../types/search.type';
-// interface ITodo {
-//   data: string;
-//   title: string;
-//   description?: string;
-//   public: boolean;
-//   complited: boolean;
-//   date: Date;
-// }
 
 export default class TodoService {
   async findAll() {
@@ -16,14 +8,21 @@ export default class TodoService {
     return todos;
   }
 
+  // async findAll() {
+  //   const limit = 10;
+  //   const page = 1;
+  //   const skip = (page - 1) * limit;
+  //   const todos = await Todo.find({ public: true }, { skip, limit: Number(limit) });
+  //   return todos;
+  // }
+
   async findOwnerTodo<T>(owner: T) {
     const todos = await Todo.find(owner);
     return todos;
   }
 
-  async findTodos(owner: string, options: ITodoFilter<boolean>) {
-    // console.log('options', { owner, ...options });
-    const todos = await Todo.find({ owner, ...options });
+  async findTodos(options: ITodoFilter<boolean>) {
+    const todos = await Todo.find(options);
     return todos;
   }
 

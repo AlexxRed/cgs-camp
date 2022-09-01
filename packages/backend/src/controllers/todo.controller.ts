@@ -2,6 +2,7 @@ import { IAppRequest } from '../types/common.type';
 import TodoService from '../services/todo.service';
 import { IUser } from '../types/user.type';
 import { ITodoFilter } from '../types/search.type';
+import { ITodo } from '../types/todos.type';
 
 export class TodoController {
   constructor(private todoService: TodoService) {}
@@ -13,18 +14,8 @@ export class TodoController {
 
   public async getByOwnerTodo(req: IAppRequest) {
     const { _id: owner } = req.user as IUser;
-    const todos = await this.todoService.findOwnerTodo({ owner });
-    return todos;
-  }
-
-  public async getFilterTodos(req: IAppRequest) {
-    const { _id: owner } = req.user as IUser;
-    const params: ITodoFilter<string> = req.query;
-    const filter: ITodoFilter<boolean> = {
-      completed: params.completed === 'true',
-      public: params.public === 'true'
-    };
-    const todos = await this.todoService.findTodos(owner, filter);
+    const params = { ...req.query, owner } as ITodoFilter<string>;
+    const todos = await this.getFilteredTodos(params);
     return todos;
   }
 
@@ -50,6 +41,21 @@ export class TodoController {
   public async deleteTodo(req: IAppRequest) {
     const { id } = req.params;
     await this.todoService.delete(id);
+  }
+
+  private async getFilteredTodos(params: ITodoFilter<string>): Promise<ITodo[]> {
+    const filter: ITodoFilter<boolean> = {};
+    if (typeof params.completed !== 'undefined') {
+      filter.completed = params.completed === 'true';
+    }
+    if (typeof params.public !== 'undefined') {
+      filter.public = params.public === 'true';
+    }
+    if (typeof params.owner !== 'undefined') {
+      filter.owner = params.owner;
+    }
+    const todos = await this.todoService.findTodos(filter);
+    return todos;
   }
 }
 

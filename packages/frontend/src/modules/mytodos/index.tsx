@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useQuery, useQueryClient } from 'react-query';
 import { Button } from '@mui/material';
@@ -10,22 +10,28 @@ import todoService from '../services/todo.service';
 import { Loader } from '../common/components/loader/loader';
 
 const MyTodosContainer = () => {
+  const [filterCompleted, setFilterCompleted] = useState<boolean | null>(null);
+
   const history = useHistory();
   const queryClient = useQueryClient();
-  const { data, isError, isLoading } = useQuery('/own', () => todoService.getOwnTodos());
+  const { data, isError, isLoading } = useQuery(['/own', filterCompleted], () => {
+    const filter = filterCompleted === null ? undefined : { completed: filterCompleted };
+    return todoService.getOwnTodos(filter);
+  });
 
   useEffect(() => {
     queryClient.invalidateQueries(QUERY_KEYS.OWNTODOS);
   }, [history]);
 
   const handleComleted = () => {
-    const queryString = 'filter?public=false&completed=true';
-    history.push(queryString);
+    setFilterCompleted(true);
   };
 
   const handleNotComleted = () => {
-    const queryString = 'filter?public=false&completed=false';
-    history.push(queryString);
+    setFilterCompleted(false);
+  };
+  const handleAll = () => {
+    setFilterCompleted(null);
   };
 
   return (
@@ -36,7 +42,10 @@ const MyTodosContainer = () => {
           Completed Todos
         </Button>
         <Button type="button" onClick={handleNotComleted}>
-          Not Coomleted
+          Not Copmleted
+        </Button>
+        <Button type="button" onClick={handleAll}>
+          All
         </Button>
       </div>
       {isLoading ? <Loader /> : isError ? <h3>Error loading</h3> : <TodoList data={data!} />}

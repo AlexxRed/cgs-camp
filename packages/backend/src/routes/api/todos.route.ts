@@ -16,11 +16,11 @@ todosRouter.get(
   ctrlWrapper(todoController.getByOwnerTodo.bind(todoController))
 );
 
-todosRouter.get(
-  '/own/filter',
-  authenticate,
-  ctrlWrapper(todoController.getFilterTodos.bind(todoController))
-);
+// todosRouter.get(
+//   '/filter',
+//   authenticate,
+//   ctrlWrapper(todoController.getFilterTodos.bind(todoController))
+// );
 
 todosRouter.get(
   '/:id',

@@ -36,8 +36,10 @@ class HttpService<T> implements IHttp {
     return data;
   }
 
-  public async getOwn(): Promise<T[]> {
-    const { data } = await axios.get(`${this.getUrl()}/${APP_KEYS.QUERY_KEYS.OWNTODOS}`);
+  public async getOwn(filter?: { completed: boolean }): Promise<T[]> {
+    const { data } = await axios.get(`${this.getUrl()}/${APP_KEYS.QUERY_KEYS.OWNTODOS}`, {
+      params: filter
+    });
     return data;
   }
 

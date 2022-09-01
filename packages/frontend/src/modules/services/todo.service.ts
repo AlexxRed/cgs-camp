@@ -11,7 +11,7 @@ class TodoService {
 
   getAllTodos = async () => this.httpService.getAll();
 
-  getOwnTodos = async () => this.httpService.getOwn();
+  getOwnTodos = async (filter?: { completed: boolean }) => this.httpService.getOwn(filter);
 
   getOneTodo = async (id: string) => this.httpService.getOne(id);
 
