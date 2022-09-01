@@ -1,4 +1,8 @@
 import axios from 'axios';
+import { APP_KEYS } from '../common/consts';
+
+const token = JSON.parse(localStorage.getItem('user')!);
+axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 
 interface IHttp {
   baseUrl: string;
@@ -49,6 +53,16 @@ class HttpService<T> implements IHttp {
 
   public async delete(id: string): Promise<void> {
     await axios.delete(this.getUrlId(id));
+  }
+
+  public async register(body: T): Promise<T> {
+    const { data } = await axios.post(`${this.getUrl()}/${APP_KEYS.QUERY_KEYS.REGISTER}`, body);
+    return data;
+  }
+
+  public async login(body: T): Promise<T> {
+    const { data } = await axios.post(`${this.getUrl()}/${APP_KEYS.QUERY_KEYS.LOGIN}`, body);
+    return data;
   }
 }
 

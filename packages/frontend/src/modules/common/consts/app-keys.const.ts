@@ -8,7 +8,10 @@ export const STORAGE_KEYS = {
 
 // React-query keys
 export const QUERY_KEYS = {
-  TODOS: 'todos'
+  TODOS: 'todos',
+  AUTH: 'user',
+  LOGIN: 'login',
+  REGISTER: 'register'
 };
 
 export const ROUTER_KEYS = {
@@ -16,5 +19,7 @@ export const ROUTER_KEYS = {
   HOME: '/home',
   CREATE_TODO: '/createtodo',
   UPDATE_TODO: '/:id',
-  AUTHORIZED: 'authorized'
+  AUTHORIZED: 'authorized',
+  REGISTER: '/auth/register',
+  LOGIN: '/auth/login'
 };

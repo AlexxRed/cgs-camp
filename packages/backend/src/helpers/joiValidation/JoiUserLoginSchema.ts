@@ -6,5 +6,5 @@ export const joiUserLoginSchema = Joi.object({
     minDomainSegments: 2,
     tlds: { allow: ['com', 'net'] }
   }),
-  password: Joi.string().min(4).max(16)
+  password: Joi.string().min(4).required()
 });
