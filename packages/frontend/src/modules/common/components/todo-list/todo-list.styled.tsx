@@ -11,3 +11,10 @@ export const StyledTodoList = styled.ul`
     width: 90%;
   }
 `;
+
+export const PaginationContainer = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 200px;
+`;

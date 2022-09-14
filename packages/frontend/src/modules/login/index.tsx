@@ -21,6 +21,7 @@ const LoginContainer = () => {
       queryClient.invalidateQueries(QUERY_KEYS.AUTH);
       localStorage.setItem(QUERY_KEYS.AUTH, JSON.stringify(data.token));
       history.push(ROUTER_KEYS.ROOT);
+      queryClient.invalidateQueries();
     }
   });
 

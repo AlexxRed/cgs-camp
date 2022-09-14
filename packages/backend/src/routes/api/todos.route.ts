@@ -11,10 +11,17 @@ const todosRouter: Router = Router();
 
 todosRouter.get('/', authenticate, ctrlWrapper(todoController.getAllTodo.bind(todoController)));
 todosRouter.get(
-  '/own/:id',
+  '/own',
   authenticate,
   ctrlWrapper(todoController.getByOwnerTodo.bind(todoController))
 );
+
+// todosRouter.get(
+//   '/filter',
+//   authenticate,
+//   ctrlWrapper(todoController.getFilterTodos.bind(todoController))
+// );
+
 todosRouter.get(
   '/:id',
   authenticate,

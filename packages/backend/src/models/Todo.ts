@@ -32,7 +32,7 @@ const todoSchema = new Schema<ITodo>(
       required: true
     },
     owner: {
-      type: Schema.Types.ObjectId,
+      type: String,
       ref: 'user'
     }
   },

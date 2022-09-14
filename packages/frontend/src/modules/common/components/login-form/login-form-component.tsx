@@ -1,11 +1,10 @@
 import React, { FC } from 'react';
 import { Formik, FormikHelpers } from 'formik';
-import { useHistory } from 'react-router-dom';
+
 import { Box, CreateTodo, FormTitle, FormButton } from './login-form.styled';
 import InputField from '../input-field-component/input-field.component';
 import loginValidation from '../../consts/validation/login-validation';
 import { IUser } from '../../types/user.types';
-import { ROUTER_KEYS } from '../../consts/app-keys.const';
 
 interface IProps {
   data: IUser;
@@ -14,12 +13,10 @@ interface IProps {
 }
 
 const RegisterFormComponent: FC<IProps> = ({ data, onSave, title }) => {
-  const history = useHistory();
-
   const handleSubmit = (values: IUser, { resetForm }: FormikHelpers<IUser>) => {
     onSave(values);
     resetForm();
-    history.push(`${ROUTER_KEYS.ROOT}`);
+    // history.push(`${ROUTER_KEYS.ROOT}`);
   };
 
   return (

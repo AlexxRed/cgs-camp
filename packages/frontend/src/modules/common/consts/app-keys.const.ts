@@ -11,7 +11,8 @@ export const QUERY_KEYS = {
   TODOS: 'todos',
   AUTH: 'user',
   LOGIN: 'login',
-  REGISTER: 'register'
+  REGISTER: 'register',
+  OWNTODOS: 'own'
 };
 
 export const ROUTER_KEYS = {
@@ -21,5 +22,6 @@ export const ROUTER_KEYS = {
   UPDATE_TODO: '/:id',
   AUTHORIZED: 'authorized',
   REGISTER: '/auth/register',
-  LOGIN: '/auth/login'
+  LOGIN: '/auth/login',
+  OWN: '/own'
 };
